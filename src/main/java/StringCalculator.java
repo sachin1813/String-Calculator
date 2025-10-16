@@ -12,9 +12,25 @@ public class StringCalculator {
         // Check for custom delimiter
         if (numbers.startsWith("//")) {
             int delimiterEnd = numbers.indexOf("\n");
-            delimiter = java.util.regex.Pattern.quote(numbers.substring(2, delimiterEnd));
+            String delimiterPart = numbers.substring(2, delimiterEnd);
+
+            // handle single or multiple delimiters like //[***] or //[*][%]
+            List<String> delimiters = new ArrayList<>();
+
+            if (delimiterPart.startsWith("[")) {
+                String[] parts = delimiterPart.split("\\]\\[");
+                for (String p : parts) {
+                    p = p.replace("[", "").replace("]", "");
+                    delimiters.add(java.util.regex.Pattern.quote(p));
+                }
+            } else {
+                delimiters.add(java.util.regex.Pattern.quote(delimiterPart));
+            }
+
+            delimiter = String.join("|", delimiters);
             numString = numbers.substring(delimiterEnd + 1);
         }
+
 
         String[] token = numString.split(delimiter);
         List<Integer> negativeNumbers = new ArrayList<>();
@@ -22,9 +38,10 @@ public class StringCalculator {
         for(String number : token){
             if(number.isEmpty()) continue;
             int num = Integer.parseInt(number);
+
             if(num < 0){
                 negativeNumbers.add(num);
-            }else {
+            }else if(num <= 1000) {
                 sum += num;
             }
         }
