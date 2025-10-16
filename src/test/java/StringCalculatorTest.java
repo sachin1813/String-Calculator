@@ -34,6 +34,11 @@ public class StringCalculatorTest {
     }
 
     @Test
+    void testCustomDelimiterNlength() {
+        assertEquals(3, new StringCalculator().add("//;;;\n1;;;2"));
+    }
+
+    @Test
     void testNegativeNumberThrows() {
         Exception exception = assertThrows(IllegalArgumentException.class, () ->
                 new StringCalculator().add("1,-2,3,-4")
@@ -41,5 +46,13 @@ public class StringCalculatorTest {
         assertEquals("negative numbers not allowed -2,-4", exception.getMessage());
     }
 
+    @Test
+    void testNumberGreaterThen1000() {
+        assertEquals(3, new StringCalculator().add("//;\n1;2;1001"));
+    }
 
+    @Test
+    void testMultipleCustomDelimiters() {
+        assertEquals(6, new StringCalculator().add("//[*][%]\n1*2%3"));
+    }
 }
