@@ -36,5 +36,7 @@ mvn test jacoco:report
 The coverage report will be available at target/site/jacoco/index.html.
 
 Project Structure
+```
 src/main/java — Application source code
 src/test/java — Unit tests
+```
