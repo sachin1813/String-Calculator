@@ -5,7 +5,15 @@ public class StringCalculator {
         //Fixed:Delimeter , or new line
         String delimiter = "[,]|\n";
 
-        String[] token = numbers.split(delimiter);
+        String numString = numbers;
+        // Check for custom delimiter
+        if (numbers.startsWith("//")) {
+            int delimiterEnd = numbers.indexOf("\n");
+            delimiter = java.util.regex.Pattern.quote(numbers.substring(2, delimiterEnd));
+            numString = numbers.substring(delimiterEnd + 1);
+        }
+
+        String[] token = numString.split(delimiter);
         int sum = 0;
         for(String number : token){
             if(number.isEmpty()) continue;
